@@ -6,8 +6,8 @@ import { RouterLink } from '@angular/router';
   selector: 'app-home',
   imports: [RouterLink, CommonModule],
   template: `
-   
-<div class="banner">
+  <div class="container mt-4">
+ <div class="banner">
   <img src="assets/images/banner2.jpg" alt="Pizza Banner">
   <div class="banner-text">
     
@@ -31,6 +31,9 @@ import { RouterLink } from '@angular/router';
     </div>
   </div>
 </div>
+</div>
+   
+
   `,
   styles: ``
 })

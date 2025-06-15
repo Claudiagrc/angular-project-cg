@@ -1,6 +1,6 @@
 body, .mycontainer {
   margin: 0 !important;
-  padding: 0 !important;
+  /* padding: 0 !important; */
   font-family: Arial, sans-serif;
   background-color: #f2e092 !important;
 }
