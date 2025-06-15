@@ -19,7 +19,7 @@ import { CartService } from './cart.service';
           <button class="btn btn-primary ms-2 myButton" (click)="remove()">-</button>
           <span>{{ getQuantity() }}</span>          
           <button class="btn btn-primary me-2 myButton" (click)="add()">+</button>
-          <button class="btn btn-secondary ms-2 myButton" (click)="removeAll()">Svuota</button>
+          <button class="btn btn-danger" (click)="removeAll()">Svuota</button>
           <button class="btn btn-secondary ms-2 myButton" [routerLink]="['/cart']">Vai al carrello<i class="fa fa-shopping-cart fa-lg"></i></button>
         </div>
         

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../shared/cart.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule],
+  
+  imports: [RouterLink,CommonModule],
   template: `
     <div class="container mt-4">
       <h2>Il tuo carrello</h2>
@@ -23,7 +25,7 @@ import { CommonModule } from '@angular/common';
               <button class="btn btn-primary ms-2 myButton" (click)="remove(item.pizza)">-</button>
               <span>{{ item.quantity }}</span>
               <button class="btn btn-primary me-2 myButton" (click)="add(item.pizza)">+</button>
-              <button class="btn btn-secondary ms-2 myButton" (click)="cleanPizza(item.pizza)">Elimina Pizza</button>
+              <button class="btn btn-danger" (click)="cleanPizza(item.pizza)">Elimina Pizza</button>
               
             </div>
           </div>
@@ -41,8 +43,14 @@ import { CommonModule } from '@angular/common';
           <div class="row">
             <div class="col-md-6">
              
-              <button class="btn btn-secondary myButton" routerLink="/menu">Aggiungi altre pizze</button>
-              <button class="btn btn-success myButton" (click)="checkout()">Procedi al pagamento</button>
+              <button class="btn btn-secondary myButton" [routerLink]="['/menu']">Aggiungi altre pizze</button>
+              
+              <button class="btn btn-success" (click)="checkout()">Procedi al pagamento</button>
+
+              <div class="myModal" *ngIf="showModal">
+                <h4>Pagamento effettuato con successo!</h4>
+                <button class="btn btn-primary myButton" (click)="closeModal()">OK</button>
+            </div>
             </div>
 
         </div>
@@ -53,6 +61,8 @@ import { CommonModule } from '@angular/common';
   styles: ``
 })
 export class CartComponent {
+  showModal = false;
+
   get cartItems() {
     return this.cart.getCartItems();
   }
@@ -76,7 +86,10 @@ export class CartComponent {
   }
 
    checkout() {
-    alert('Pagamento effettuato con successo!');
-    this.cart.clearCart();
+  this.showModal = true;
   }
+  closeModal() {
+  this.showModal = false;
+  this.cart.clearCart();
+}
 }

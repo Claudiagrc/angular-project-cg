@@ -11,7 +11,7 @@ import { filter } from 'rxjs/operators';
     <app-nav-bar />
     <div class="container">
         <div class="row">
-          <div class="col-md-6 mx-auto">
+          <div class="col-md-12 mx-auto text-center">
             <h1>Welcome to {{title}}!</h1>
           </div>
       </div>
