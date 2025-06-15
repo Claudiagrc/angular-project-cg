@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Pizza } from '../models/pizza';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CartService } from './cart.service';
+
 
 @Component({
   selector: 'app-card',
   standalone: true,
   imports: [RouterLink, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card h-100">
       <img [src]="pizza.image" class="card-img-top" alt="{{ pizza.name }}">
@@ -17,12 +18,11 @@ import { CartService } from './cart.service';
         <p class="card-text">Prezzo: {{ pizza.price | currency }}</p>
         <div>
           <button class="btn btn-primary ms-2 myButton" (click)="remove()">-</button>
-          <span>{{ getQuantity() }}</span>          
+          <span>{{ quantity }}</span>          
           <button class="btn btn-primary me-2 myButton" (click)="add()">+</button>
           <button class="btn btn-danger" (click)="removeAll()">Svuota</button>
           <button class="btn btn-secondary ms-2 myButton" [routerLink]="['/cart']">Vai al carrello<i class="fa fa-shopping-cart fa-lg"></i></button>
         </div>
-        
       </div>
     </div>
   `,
@@ -30,19 +30,21 @@ import { CartService } from './cart.service';
 })
 export class CardComponent {
   @Input() pizza!: Pizza;
+  @Input() quantity: number = 0;
 
-  constructor(private cart: CartService) {}
+  @Output() addPizza = new EventEmitter<Pizza>();
+  @Output() removePizza = new EventEmitter<Pizza>();
+  @Output() removeAllPizza = new EventEmitter<Pizza>();
 
   add() {
-    this.cart.addPizza(this.pizza);
+    this.addPizza.emit(this.pizza);
   }
   remove() {
-    this.cart.removePizza(this.pizza);
+    this.removePizza.emit(this.pizza);
   }
   removeAll() {
-    this.cart.removeAllPizza(this.pizza);
-  }
-  getQuantity() {
-    return this.cart.getQuantity(this.pizza);
-  }
+    this.removeAllPizza.emit(this.pizza);
+  }   
+  
+ 
 }

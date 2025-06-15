@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../shared/cart.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -6,15 +6,15 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  
-  imports: [RouterLink,CommonModule],
+  imports: [RouterLink, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="container mt-4">
       <h2>Il tuo carrello</h2>
-      <div *ngIf="cartItems.length === 0">
+      <div *ngIf="cartItems().length === 0">
         <p>Il carrello è vuoto.</p>
       </div>
-      <div *ngFor="let item of cartItems" class="mb-3">
+      <div *ngFor="let item of cartItems()" class="mb-3">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
             <div>
@@ -26,35 +26,30 @@ import { RouterLink } from '@angular/router';
               <span>{{ item.quantity }}</span>
               <button class="btn btn-primary me-2 myButton" (click)="add(item.pizza)">+</button>
               <button class="btn btn-danger" (click)="cleanPizza(item.pizza)">Elimina Pizza</button>
-              
             </div>
           </div>
         </div>
       </div>
-      <div *ngIf="cartItems.length > 0" class="mt-3">
+      <div *ngIf="cartItems().length > 0" class="mt-3">
         <div class="container">
           <div class="row">
             <div class="col-md-6">
               <h4>Dettagli del carrello</h4>
-              <p>Totale pizze: {{ totalQuantity }}</p>
-              <p>Totale da pagare: {{ totalPrice | currency }}</p>
+              <p>Totale pizze: {{ totalQuantity() }}</p>
+              <p>Totale da pagare: {{ totalPrice() | currency }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-             
               <button class="btn btn-secondary myButton" [routerLink]="['/menu']">Aggiungi altre pizze</button>
-              
               <button class="btn btn-success" (click)="checkout()">Procedi al pagamento</button>
-
               <div class="myModal" *ngIf="showModal">
                 <h4>Pagamento effettuato con successo!</h4>
                 <button class="btn btn-primary myButton" (click)="closeModal()">OK</button>
+              </div>
             </div>
-            </div>
-
+          </div>
         </div>
-        
       </div>
     </div>
   `,
@@ -62,16 +57,10 @@ import { RouterLink } from '@angular/router';
 })
 export class CartComponent {
   showModal = false;
-
-  get cartItems() {
-    return this.cart.getCartItems();
-  }
-  get totalQuantity() {
-    return this.cart.getTotalQuantity();
-  }
-  get totalPrice() {
-    return this.cart.getTotalPrice();
-  }
+  
+  cartItems = computed(() => this.cart.cartSignal() ? Object.values(this.cart.cartSignal()) : []);
+  totalQuantity = computed(() => this.cart.getTotalQuantity());
+  totalPrice = computed(() => this.cart.getTotalPrice());
 
   constructor(public cart: CartService) {}
 
@@ -85,11 +74,11 @@ export class CartComponent {
     this.cart.removeAllPizza(pizza);
   }
 
-   checkout() {
-  this.showModal = true;
+  checkout() {
+    this.showModal = true;
   }
   closeModal() {
-  this.showModal = false;
-  this.cart.clearCart();
-}
+    this.showModal = false;
+    this.cart.clearCart();
+  }
 }
