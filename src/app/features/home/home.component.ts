@@ -6,13 +6,16 @@ import { RouterLink } from '@angular/router';
   selector: 'app-home',
   imports: [RouterLink, CommonModule],
   template: `
-  <div class="container mt-4">
- <div class="banner">
+<div class="container-fluid">
+  <div class="banner">
   <img src="assets/images/banner2.jpg" alt="Pizza Banner">
   <div class="banner-text">
     
   </div>
 </div>
+  </div>
+  <div class="container mt-4">
+ 
 <div class="container mx-auto">
   <div class="row">
     <div class="col-md-12 mx-auto">

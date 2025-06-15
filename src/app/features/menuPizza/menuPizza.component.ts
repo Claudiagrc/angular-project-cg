@@ -16,7 +16,7 @@ import { CartService } from '../../shared/cart.service';
       <h2>Menù delle pizze disponibili</h2>
       <p>Seleziona la pizza che preferisci!</p>
       <div class="row">
-        <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let pizza of pizzaList()">
+        <div class="col-10 col-md-6 col-lg-3 mb-4" *ngFor="let pizza of pizzaList()">
           <app-card
             [pizza]="pizza"
             [quantity]="cart.getQuantity(pizza)"

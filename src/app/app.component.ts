@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
   selector: 'app-root',
   imports: [RouterOutlet,NavBarComponent],
   template: `
-  <div class="mycontainer">
+  <div class="mycontainer text-center">
     <app-nav-bar />
     <h1>Welcome to {{title}}!</h1>
     <router-outlet />
